@@ -42,14 +42,10 @@ def clean_sql(sql):
     return sql
 
 def generate_sql(user_question):
-    models_to_try = [
-        "models/gemini-2.0-flash",
-        "models/gemini-2.0-flash-001",
-        "models/gemini-2.0-flash-lite",
-        "models/gemini-flash-latest",
-        "models/gemini-2.5-pro",
-        "models/gemini-pro-latest",
-    ]
+   models_to_try = [
+    "models/gemini-2.0-flash",
+    "models/gemini-flash-latest",
+]
     prompt = f"""You are an expert SQL assistant working with SQLite.
 Here is the database schema:
 {DB_SCHEMA}
