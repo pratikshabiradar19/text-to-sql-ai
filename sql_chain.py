@@ -2,9 +2,8 @@ import sqlite3
 import pandas as pd
 from dotenv import load_dotenv
 import os
-import google.generativeai as genai
-
 import streamlit as st
+import google.generativeai as genai
 
 load_dotenv()
 
@@ -42,10 +41,10 @@ def clean_sql(sql):
     return sql
 
 def generate_sql(user_question):
-   models_to_try = [
-    "models/gemini-2.0-flash",
-    "models/gemini-flash-latest",
-]
+    models_to_try = [
+        "models/gemini-2.0-flash",
+        "models/gemini-flash-latest",
+    ]
     prompt = f"""You are an expert SQL assistant working with SQLite.
 Here is the database schema:
 {DB_SCHEMA}
@@ -60,7 +59,6 @@ Rules:
 - Use exact column and table names from schema
 - Use JOIN when combining tables
 - Use ORDER BY and LIMIT for top or bottom results"""
-
     last_error = None
     for model_name in models_to_try:
         try:
@@ -68,10 +66,8 @@ Rules:
             response = model.generate_content(prompt)
             sql = response.text.strip()
             sql = clean_sql(sql)
-            print(f"Used model: {model_name}")
             return sql
         except Exception as e:
-            print(f"Model {model_name} failed: {e}")
             last_error = e
             continue
     raise Exception(f"All models failed. Last error: {last_error}")
