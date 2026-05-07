@@ -1,19 +1,18 @@
 import streamlit as st
+import subprocess
+subprocess.run(["python", "database.py"])
 from sql_chain import ask
 
-# Page settings
 st.set_page_config(
     page_title="Text-to-SQL AI Assistant",
     page_icon="🗄️",
     layout="wide"
 )
 
-# Main heading
 st.title("🗄️ Text-to-SQL AI Assistant")
 st.markdown("**Ask any question in plain English — get database results instantly.**")
 st.markdown("No SQL knowledge needed!")
 
-# Sidebar with example questions
 with st.sidebar:
     st.header("📋 Try these questions")
     st.markdown("Click any question to auto-fill it:")
@@ -42,13 +41,11 @@ with st.sidebar:
     st.markdown("- 15 Orders")
     st.markdown("- 3 Categories: Electronics, Footwear, Clothing")
 
-# Initialize session state
 if "history" not in st.session_state:
     st.session_state.history = []
 if "question" not in st.session_state:
     st.session_state.question = ""
 
-# Main input area
 col1, col2 = st.columns([4, 1])
 
 with col1:
@@ -63,17 +60,13 @@ with col2:
 
 st.divider()
 
-# When user clicks Run
 if run_button and question:
-
     with st.spinner("Generating SQL query and fetching results..."):
         sql, df, error = ask(question)
 
-    # Show the generated SQL
     st.subheader("Generated SQL Query")
     st.code(sql, language="sql")
 
-    # Show results or error
     if error:
         st.error(f"Error running query: {error}")
         st.info("Try rephrasing your question and run again.")
@@ -82,7 +75,6 @@ if run_button and question:
         st.subheader(f"Results — {len(df)} rows found")
         st.dataframe(df, use_container_width=True)
 
-        # Download button
         csv = df.to_csv(index=False)
         st.download_button(
             label="⬇️ Download results as CSV",
@@ -91,7 +83,6 @@ if run_button and question:
             mime="text/csv"
         )
 
-        # Save to history
         st.session_state.history.append({
             "question": question,
             "sql": sql,
@@ -106,7 +97,6 @@ if run_button and question:
 elif run_button and not question:
     st.warning("Please type a question first!")
 
-# Query history
 if st.session_state.history:
     st.divider()
     st.subheader("📜 Your Query History")
