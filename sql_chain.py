@@ -4,8 +4,16 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
+import streamlit as st
+
 load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+try:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+except:
+    api_key = os.getenv("GOOGLE_API_KEY")
+
+genai.configure(api_key=api_key)
 
 DB_SCHEMA = """
 Database: E-Commerce Store
