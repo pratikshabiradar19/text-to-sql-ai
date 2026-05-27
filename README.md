@@ -67,11 +67,17 @@ text-to-sql-ai/
 
 ## 📸 Screenshots
 
+## 📸 Screenshots
+
 ### Main Interface
-![Main Interface](images/main.png)
+![Main Interface](upload.png)
 
 ### Query Results
-![Results](images/results.png)
+![Results](results.png)
+
+### Dashboard
+![Dashboard](dashboard.png)
+
 
 ---
 
